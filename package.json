@@ -1,0 +1,21 @@
+{
+  "name": "openhim-mediator-utils",
+  "version": "0.1.0",
+  "description": "Utilities for creating OpenHIM mediators",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openhim",
+    "mediator"
+  ],
+  "author": "jembi",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "eslint": "^1.5.1"
+  },
+  "dependencies": {
+    "request": "^2.63.0"
+  }
+}
