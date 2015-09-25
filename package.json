@@ -17,5 +17,13 @@
   },
   "dependencies": {
     "request": "^2.63.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jembi/openhim-mediator-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jembi/openhim-mediator-utils/issues"
+  },
+  "homepage": "https://github.com/jembi/openhim-mediator-utils#readme"
 }
