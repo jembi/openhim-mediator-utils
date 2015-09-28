@@ -15,8 +15,8 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
   const apiURL = options.apiURL;
 
   // authenticate the username
-  utils.authenticate({username: username, apiURL: apiURL}, () => {
-    let headers = utils.genAuthHeaders({username: username, password: password});
+  utils.authenticate({username, apiURL}, () => {
+    let headers = utils.genAuthHeaders({username, password});
 
     // define request headers with auth credentails
     let reqOptions = {
@@ -29,7 +29,7 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
     // POST mediator to API for creation/update
     request.post(reqOptions, (err, resp) => {
       if (err){
-        callback(err);
+        return callback(err);
       }
 
       // check the response status from the API server
