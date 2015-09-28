@@ -29,7 +29,7 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
     // POST mediator to API for creation/update
     request.post(reqOptions, (err, resp) => {
       if (err){
-        callback(err);
+        return callback(err);
       }
 
       // check the response status from the API server
