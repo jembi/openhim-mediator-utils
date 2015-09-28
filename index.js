@@ -9,3 +9,4 @@ exports.genAuthHeaders = auth.genAuthHeaders;
 exports.registerMediator = register.registerMediator;
 exports.activateHeartbeat = heartbeat.activateHeartbeat;
 exports.deactivateHearbeat = heartbeat.deactivateHearbeat;
+exports.fetchConfig = heartbeat.fetchConfig;

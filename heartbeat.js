@@ -7,22 +7,39 @@ const events = require('events');
 const emitter = new events.EventEmitter();
 let timer;
 
-function sendHeartbeat(options) {
+function sendHeartbeat(options, forceConfig, callback) {
   let reqOptions = {
     url: `${options.apiURL}/mediators/${options.urn}/heartbeat`,
     headers: auth.genAuthHeaders(options),
     body: {uptime: process.uptime()},
     json: true
   };
+  if (forceConfig === true) {
+    reqOptions.body.config = true;
+  }
   request.post(reqOptions, (err, res, body) => {
     if (err) {
-      console.log(err.stack);
+      if (callback) {
+        callback(err);
+      } else {
+        emitter.emit('error', err);
+      }
     }
     if (res.statusCode !== 200) {
-      console.log(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
+      let err = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
+      if (callback) {
+        callback(err);
+      } else {
+        emitter.emit('error', err);
+      }
     }
     if (body && body !== 'OK') {
-      emitter.emit('config', body);
+      // if there is a callback use that else, emit as an event
+      if (callback) {
+        callback(null, body);
+      } else {
+        emitter.emit('config', body);
+      }
     }
   });
 }
@@ -30,7 +47,10 @@ function sendHeartbeat(options) {
 exports.activateHeartbeat = (options, interval) => {
   interval = interval || 10000;
 
-  auth.authenticate({apiURL: options.apiURL, username: options.username}, () => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+    if (err) {
+      return emitter.emit('error', err);
+    }
     if (timer) {
       clearInterval(timer);
     }
@@ -44,4 +64,13 @@ exports.activateHeartbeat = (options, interval) => {
 
 exports.deactivateHearbeat = () => {
   clearInterval(timer);
+};
+
+exports.fetchConfig = (options, callback) => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+    if (err) {
+      return callback(err);
+    }
+    sendHeartbeat(options, true, callback);
+  });
 };

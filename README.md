@@ -18,6 +18,7 @@ utils.authenticate(...);
 utils.genAuthHeaders(...);
 utils.activateHeartbeat(...);
 utils.deactivateHearbeat(...);
+utils.fetchConfig(...);
 ```
 
 ## API details
@@ -74,12 +75,12 @@ headers = {
 
 If the user has not been authenticated first, then an exception will be thrown
 
-### Mediator Heartbeats
+### Mediator Heartbeats and Configuration
 
 #### .activateHeartbeat(options, interval)
 
-Begins sending heartbeats to the OpenHIM-core server. This function takes an
-options object with the following properties:
+Begins sending heartbeats to the OpenHIM-core server (also returns any config
+changes). This function takes an options object with the following properties:
 
 * `options.apiURL` - the URL of the OpenHIM core API eg. "https://localhost:8080"
 * `options.username` - the username of the user to be authenticated
@@ -89,8 +90,22 @@ It also takes an interval parameter which is the interval to send heartbeats
 in ms. This parameter default to 10s.
 
 This function returns an event emitter which emits a 'config' event with a
-config object each time the mediator config is changed on the OpenHIM.
+config object each time the mediator config is changed on the OpenHIM. If an
+error occurs an 'error' event is emitted with an error object.
 
 #### .deactivateHearbeat()
 
 Deactivates the sending of heartbeats.
+
+#### .fetchConfig(options, callback)
+
+Forces the latest config to be returned from the OpenHIM-core. This is useful
+when you need to fetch initial config at mediator startup (if you are just interested in the latest config updates use rather `.activateHeartbeat(...)` above). This function takes
+an options object with the following properties:
+
+* `options.apiURL` - the URL of the OpenHIM core API eg. "https://localhost:8080"
+* `options.username` - the username of the user to be authenticated
+* `options.password` - the password for the user
+
+callback will be called with an Error object if an error occurs, otherwise
+the config received from the OpenHIM-core server is returned.

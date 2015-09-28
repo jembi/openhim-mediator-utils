@@ -15,7 +15,10 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
   const apiURL = options.apiURL;
 
   // authenticate the username
-  utils.authenticate({username, apiURL}, () => {
+  utils.authenticate({username, apiURL}, (err) => {
+    if (err) {
+      return callback(err);
+    }
     let headers = utils.genAuthHeaders({username, password});
 
     // define request headers with auth credentails

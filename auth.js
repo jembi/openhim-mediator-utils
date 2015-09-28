@@ -23,14 +23,14 @@ exports.authenticate = (options, callback) => {
     } catch (err) {
       callback(err);
     }
-    callback(body);
+    callback(null, body);
   });
 };
 
 exports.genAuthHeaders = (options) => {
   let salt = authUserMap.get(options.username);
   if (salt === undefined) {
-    throw new Error(`${options.username} has not been authenticatd. Please use the .authenticate() function first`);
+    throw new Error(`${options.username} has not been authenticated. Please use the .authenticate() function first`);
   }
 
   let now = new Date();
