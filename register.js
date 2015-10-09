@@ -4,11 +4,6 @@ const request = require('request');
 const utils = require('./auth');
 
 exports.registerMediator = (options, mediatorConfig, callback) => {
-  console.log(`Attempting to create/update mediator...`);
-
-  // used to bypass self signed certificates
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
   // define login credentails for authorization
   const username = options.username;
   const password = options.password;
