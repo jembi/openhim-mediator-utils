@@ -20,25 +20,25 @@ function sendHeartbeat(options, forceConfig, callback) {
   request.post(reqOptions, (err, res, body) => {
     if (err) {
       if (callback) {
-        callback(err);
+        return callback(err);
       } else {
-        emitter.emit('error', err);
+        return emitter.emit('error', err);
       }
     }
     if (res.statusCode !== 200) {
       let err = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
       if (callback) {
-        callback(err);
+        return callback(err);
       } else {
-        emitter.emit('error', err);
+        return emitter.emit('error', err);
       }
     }
     if (body && body !== 'OK') {
       // if there is a callback use that else, emit as an event
       if (callback) {
-        callback(null, body);
+        return callback(null, body);
       } else {
-        emitter.emit('config', body);
+        return emitter.emit('config', body);
       }
     }
   });
