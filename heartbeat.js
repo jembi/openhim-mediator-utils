@@ -67,7 +67,12 @@ exports.activateHeartbeat = (options, interval) => {
   return emitter;
 };
 
+// typo :( - leaving here for backwards compatibility
 exports.deactivateHearbeat = () => {
+  clearInterval(timer);
+};
+
+exports.deactivateHeartbeat = () => {
   clearInterval(timer);
 };
 
