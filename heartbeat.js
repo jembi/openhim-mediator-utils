@@ -40,6 +40,11 @@ function sendHeartbeat(options, forceConfig, callback) {
       } else {
         return emitter.emit('config', body);
       }
+    } else {
+      // No config found
+      if (callback) {
+        return callback(null, {});
+      }
     }
   });
 }
