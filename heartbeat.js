@@ -40,6 +40,11 @@ function sendHeartbeat(options, forceConfig, callback) {
       } else {
         return emitter.emit('config', body);
       }
+    } else {
+      // No config found
+      if (callback) {
+        return callback(null, {});
+      }
     }
   });
 }
@@ -62,7 +67,12 @@ exports.activateHeartbeat = (options, interval) => {
   return emitter;
 };
 
+// typo :( - leaving here for backwards compatibility
 exports.deactivateHearbeat = () => {
+  clearInterval(timer);
+};
+
+exports.deactivateHeartbeat = () => {
   clearInterval(timer);
 };
 
