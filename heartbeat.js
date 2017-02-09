@@ -12,7 +12,8 @@ function sendHeartbeat(options, forceConfig, callback) {
     url: `${options.apiURL}/mediators/${options.urn}/heartbeat`,
     headers: auth.genAuthHeaders(options),
     body: {uptime: process.uptime()},
-    json: true
+    json: true,
+    rejectUnauthorized: !options.trustSelfSigned
   };
   if (forceConfig === true) {
     reqOptions.body.config = true;

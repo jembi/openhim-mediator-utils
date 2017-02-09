@@ -8,6 +8,7 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
   const username = options.username;
   const password = options.password;
   const apiURL = options.apiURL;
+  const rejectUnauthorized = !options.trustSelfSigned;
 
   // authenticate the username
   utils.authenticate({username, apiURL}, (err) => {
@@ -21,7 +22,8 @@ exports.registerMediator = (options, mediatorConfig, callback) => {
       url: `${apiURL}/mediators`,
       json: true,
       headers: headers,
-      body: mediatorConfig
+      body: mediatorConfig,
+      rejectUnauthorized: rejectUnauthorized
     };
 
     // POST mediator to API for creation/update
