@@ -8,11 +8,12 @@ const emitter = new events.EventEmitter();
 let timer;
 
 function sendHeartbeat(options, forceConfig, callback) {
-  let reqOptions = {
+  const reqOptions = {
     url: `${options.apiURL}/mediators/${options.urn}/heartbeat`,
     headers: auth.genAuthHeaders(options),
     body: {uptime: process.uptime()},
-    json: true
+    json: true,
+    rejectUnauthorized: !options.trustSelfSigned
   };
   if (forceConfig === true) {
     reqOptions.body.config = true;
@@ -26,11 +27,11 @@ function sendHeartbeat(options, forceConfig, callback) {
       }
     }
     if (res.statusCode !== 200) {
-      let err = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
+      const error = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
       if (callback) {
-        return callback(err);
+        return callback(error);
       } else {
-        return emitter.emit('error', err);
+        return emitter.emit('error', error);
       }
     }
     if (body && body !== 'OK') {
@@ -52,7 +53,7 @@ function sendHeartbeat(options, forceConfig, callback) {
 exports.activateHeartbeat = (options, interval) => {
   interval = interval || 10000;
 
-  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username, rejectUnauthorized: !options.trustSelfSigned}, (err) => {
     if (err) {
       return emitter.emit('error', err);
     }
@@ -77,7 +78,7 @@ exports.deactivateHeartbeat = () => {
 };
 
 exports.fetchConfig = (options, callback) => {
-  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username, rejectUnauthorized: !options.trustSelfSigned}, (err) => {
     if (err) {
       return callback(err);
     }

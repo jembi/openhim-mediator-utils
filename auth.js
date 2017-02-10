@@ -7,7 +7,12 @@ const authUserMap = new Map();
 
 exports.authenticate = (options, callback) => {
   // authenticate the username
-  request.get(`${options.apiURL}/authenticate/${options.username}`, (err, resp, body) => {
+  let reqOptions = {
+    url: `${options.apiURL}/authenticate/${options.username}`,
+    rejectUnauthorized: options.rejectUnauthorized
+  };
+  
+  request.get(reqOptions, (err, resp, body) => {
     if (err){
       callback(err);
       return;
@@ -28,22 +33,22 @@ exports.authenticate = (options, callback) => {
 };
 
 exports.genAuthHeaders = (options) => {
-  let salt = authUserMap.get(options.username);
+  const salt = authUserMap.get(options.username);
   if (salt === undefined) {
     throw new Error(`${options.username} has not been authenticated. Please use the .authenticate() function first`);
   }
 
-  let now = new Date();
+  const now = new Date();
 
   // create passhash
   let shasum = crypto.createHash('sha512');
   shasum.update(salt + options.password);
-  let passhash = shasum.digest('hex');
+  const passhash = shasum.digest('hex');
 
   // create token
   shasum = crypto.createHash('sha512');
   shasum.update(passhash + salt + now);
-  let token = shasum.digest('hex');
+  const token = shasum.digest('hex');
 
   // define request headers with auth credentails
   return {
