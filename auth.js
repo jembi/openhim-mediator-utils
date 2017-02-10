@@ -7,7 +7,12 @@ const authUserMap = new Map();
 
 exports.authenticate = (options, callback) => {
   // authenticate the username
-  request.get(`${options.apiURL}/authenticate/${options.username}`, (err, resp, body) => {
+  let reqOptions = {
+    url: `${options.apiURL}/authenticate/${options.username}`,
+    rejectUnauthorized: options.rejectUnauthorized
+  };
+  
+  request.get(reqOptions, (err, resp, body) => {
     if (err){
       callback(err);
       return;

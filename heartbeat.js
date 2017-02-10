@@ -53,7 +53,7 @@ function sendHeartbeat(options, forceConfig, callback) {
 exports.activateHeartbeat = (options, interval) => {
   interval = interval || 10000;
 
-  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username, rejectUnauthorized: !options.trustSelfSigned}, (err) => {
     if (err) {
       return emitter.emit('error', err);
     }
@@ -78,7 +78,7 @@ exports.deactivateHeartbeat = () => {
 };
 
 exports.fetchConfig = (options, callback) => {
-  auth.authenticate({apiURL: options.apiURL, username: options.username}, (err) => {
+  auth.authenticate({apiURL: options.apiURL, username: options.username, rejectUnauthorized: !options.trustSelfSigned}, (err) => {
     if (err) {
       return callback(err);
     }
