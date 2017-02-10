@@ -8,7 +8,7 @@ const emitter = new events.EventEmitter();
 let timer;
 
 function sendHeartbeat(options, forceConfig, callback) {
-  let reqOptions = {
+  const reqOptions = {
     url: `${options.apiURL}/mediators/${options.urn}/heartbeat`,
     headers: auth.genAuthHeaders(options),
     body: {uptime: process.uptime()},
@@ -27,11 +27,11 @@ function sendHeartbeat(options, forceConfig, callback) {
       }
     }
     if (res.statusCode !== 200) {
-      let err = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
+      const error = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
       if (callback) {
-        return callback(err);
+        return callback(error);
       } else {
-        return emitter.emit('error', err);
+        return emitter.emit('error', error);
       }
     }
     if (body && body !== 'OK') {
