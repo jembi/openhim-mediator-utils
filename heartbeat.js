@@ -27,7 +27,7 @@ function sendHeartbeat(options, forceConfig, callback) {
       }
     }
     if (res.statusCode !== 200) {
-      const error = new Error(`Heartbeat unsuccessful, recieved status code of ${res.statusCode}`);
+      const error = new Error(`Heartbeat unsuccessful, received status code of ${res.statusCode}`);
       if (callback) {
         return callback(error);
       } else {
