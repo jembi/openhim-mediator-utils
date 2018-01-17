@@ -85,6 +85,7 @@ changes). This function takes an options object with the following properties:
 * `options.apiURL` - the URL of the OpenHIM core API eg. "https://localhost:8080"
 * `options.username` - the username of the user to be authenticated
 * `options.password` - the password for the user
+* `options.urn` - the URN of the mediator to send heartbeats for
 
 It also takes an interval parameter which is the interval to send heartbeats
 in ms. This parameter default to 10s.
