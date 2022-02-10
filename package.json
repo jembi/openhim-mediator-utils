@@ -4,7 +4,9 @@
   "description": "Utilities for creating OpenHIM mediators",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:unit && npm run test:lint",
+    "test:unit": "jest",
+    "test:lint": "eslint **/*.js"
   },
   "keywords": [
     "openhim",
@@ -13,7 +15,8 @@
   "author": "jembi",
   "license": "MPL-2.0",
   "devDependencies": {
-    "eslint": "^1.5.1"
+    "eslint": "^1.5.1",
+    "jest": "^27.5.1"
   },
   "dependencies": {
     "request": "^2.63.0"
