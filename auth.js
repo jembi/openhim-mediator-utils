@@ -38,7 +38,7 @@ exports.genAuthHeaders = (options) => {
     throw new Error(`${options.username} has not been authenticated. Please use the .authenticate() function first`);
   }
 
-  const now = new Date();
+  const now = new Date().toISOString();
 
   // create passhash
   let shasum = crypto.createHash('sha512');
