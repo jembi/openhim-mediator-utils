@@ -4,8 +4,8 @@
   "description": "Utilities for creating OpenHIM mediators",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:unit && npm run test:lint",
-    "test:unit": "jest",
+    "test": "npm run test:integration && npm run test:lint",
+    "test:integration": "jest",
     "test:lint": "eslint **/*.js"
   },
   "keywords": [
