@@ -48,8 +48,9 @@ called with nothing.
 Fetches authentication detail from the OpenHIM core to use for future
 communication, options must contain:
 
-* options.apiURL - the URL of the OpenHIM core API eg. "https://localhost:8080"
-* options.username - the username of the user to be authenticated
+* `options.apiURL` - the URL of the OpenHIM core API eg. "https://localhost:8080"
+* `options.username` - the username of the user to be authenticated
+* `options.trustSelfSigned` - [optional] boolean which default to false - if set to true, ignore self signed certificate errors (for non-production use)
 
 callback will be called with an Error object if an error occurs, otherwise
 the body received from the OpenHIM-core server is returned. This is an object
@@ -86,6 +87,7 @@ changes). This function takes an options object with the following properties:
 * `options.username` - the username of the user to be authenticated
 * `options.password` - the password for the user
 * `options.urn` - the URN of the mediator to send heartbeats for
+* `options.trustSelfSigned` - [optional] boolean which default to false - if set to true, ignore self signed certificate errors (for non-production use)
 
 It also takes an interval parameter which is the interval to send heartbeats
 in ms. This parameter default to 10s.
@@ -94,7 +96,7 @@ This function returns an event emitter which emits a 'config' event with a
 config object each time the mediator config is changed on the OpenHIM. If an
 error occurs an 'error' event is emitted with an error object.
 
-#### .deactivateHearbeat()
+#### .deactivateHeartbeat()
 
 Deactivates the sending of heartbeats.
 
@@ -107,6 +109,7 @@ an options object with the following properties:
 * `options.apiURL` - the URL of the OpenHIM core API eg. "https://localhost:8080"
 * `options.username` - the username of the user to be authenticated
 * `options.password` - the password for the user
+* `options.trustSelfSigned` - [optional] boolean which default to false - if set to true, ignore self signed certificate errors (for non-production use)
 
 callback will be called with an Error object if an error occurs, otherwise
 the config received from the OpenHIM-core server is returned.

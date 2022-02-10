@@ -9,8 +9,12 @@ exports.authenticate = (options, callback) => {
   // authenticate the username
   let reqOptions = {
     url: `${options.apiURL}/authenticate/${options.username}`,
-    rejectUnauthorized: options.rejectUnauthorized
+    rejectUnauthorized: !options.trustSelfSigned
   };
+  // continue to support old option name for backwards compatibility
+  if (options.rejectUnauthorized == false) {
+    reqOptions.rejectUnauthorized = false;
+  }
   
   request.get(reqOptions, (err, resp, body) => {
     if (err){
