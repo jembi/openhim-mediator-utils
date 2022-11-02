@@ -21,6 +21,18 @@ utils.deactivateHearbeat(...);
 utils.fetchConfig(...);
 ```
 
+## Testing
+
+To run the tests, there are a few prerequisite steps. Run the below steps in the order specified to run the tests.
+
+- npm install
+- npm run openhim:download
+- npm run openhim:start
+- npm run test
+
+> Note: Run the following command post testing to clean your environment
+>- npm run openhim:destroy
+
 ## API details
 
 ### Mediator Registration

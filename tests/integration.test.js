@@ -1,11 +1,11 @@
-/* global describe, it, expect */
-// import fetch from 'node-fetch';
-import request from "request";
+import fetch from "node-fetch";
+import https from "https";
 
-import utils from "../index.js";
-// const utils = require('../index.js');
+import utils from "../index";
 
-// const request = require('request');
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 describe("OpenHIM API Authentication", () => {
   it("Should authenticate and receive headers that allow API access to the OpenHIM", (done) => {
@@ -15,7 +15,7 @@ describe("OpenHIM API Authentication", () => {
         username: "root@openhim.org",
         rejectUnauthorized: false,
       },
-      (err, body) => {
+      async (err, body) => {
         try {
           expect(err).toBeNull();
           expect(body).toBeTruthy();
@@ -30,23 +30,20 @@ describe("OpenHIM API Authentication", () => {
           password: "openhim-password",
         });
 
-        const reqOptions = {
-          url: `https://localhost:8080/channels`,
-          headers: authHeaders,
-          json: true,
-          rejectUnauthorized: false,
-        };
-        request.get(reqOptions, (err, res, body) => {
-          try {
-            expect(err).toBeNull();
-            expect(res.statusCode).toBe(200);
-            expect(body).toBeTruthy();
-          } catch (err) {
-            return done(err);
-          }
+        try {
+          const res = await fetch("https://localhost:8080/channels", {
+            headers: authHeaders,
+            method: "GET",
+            agent: httpsAgent,
+          });
+
+          expect(res.status).toBe(200);
+          expect(res.body).toBeTruthy();
 
           done();
-        });
+        } catch (error) {
+          return done(error);
+        }
       }
     );
   });
@@ -58,7 +55,7 @@ describe("OpenHIM API Authentication", () => {
         username: "root@openhim.org",
         rejectUnauthorized: false,
       },
-      (err, body) => {
+      async (err, body) => {
         try {
           expect(err).toBeNull();
           expect(body).toBeTruthy();
@@ -73,22 +70,19 @@ describe("OpenHIM API Authentication", () => {
           password: "incorrect",
         });
 
-        const reqOptions = {
-          url: `https://localhost:8080/channels`,
-          headers: authHeaders,
-          json: true,
-          rejectUnauthorized: false,
-        };
-        request.get(reqOptions, (err, res) => {
-          try {
-            expect(err).toBeNull();
-            expect(res.statusCode).toBe(401);
-          } catch (err) {
-            return done(err);
-          }
+        try {
+          const res = await fetch("https://localhost:8080/channels", {
+            headers: authHeaders,
+            method: "GET",
+            agent: httpsAgent,
+          });
+
+          expect(res.status).toBe(401);
 
           done();
-        });
+        } catch (error) {
+          return done(error);
+        }
       }
     );
   });
@@ -100,7 +94,7 @@ describe("OpenHIM API Authentication", () => {
         username: "root@openhim.org",
         trustSelfSigned: true,
       },
-      (err, body) => {
+      async (err, body) => {
         try {
           expect(err).toBeNull();
           expect(body).toBeTruthy();
@@ -115,22 +109,19 @@ describe("OpenHIM API Authentication", () => {
           password: "incorrect",
         });
 
-        const reqOptions = {
-          url: `https://localhost:8080/channels`,
-          headers: authHeaders,
-          json: true,
-          rejectUnauthorized: false,
-        };
-        request.get(reqOptions, (err, res) => {
-          try {
-            expect(err).toBeNull();
-            expect(res.statusCode).toBe(401);
-          } catch (err) {
-            return done(err);
-          }
+        try {
+          const res = await fetch("https://localhost:8080/channels", {
+            headers: authHeaders,
+            method: "GET",
+            agent: httpsAgent,
+          });
+
+          expect(res.status).toBe(401);
 
           done();
-        });
+        } catch (error) {
+          return done(error);
+        }
       }
     );
   });
