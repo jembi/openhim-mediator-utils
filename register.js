@@ -3,7 +3,7 @@
 import request from "request";
 import utils from "./index";
 
-export const registerMediator = (options, mediatorConfig, callback) => {
+export const registerMediator = async (options, mediatorConfig, callback) => {
   // define login credentails for authorization
   const username = options.username;
   const password = options.password;
@@ -11,7 +11,7 @@ export const registerMediator = (options, mediatorConfig, callback) => {
   const rejectUnauthorized = !options.trustSelfSigned;
 
   // authenticate the username
-  utils.authenticate({ username, apiURL, rejectUnauthorized }, (err) => {
+  await utils.authenticate({ username, apiURL, rejectUnauthorized }, (err) => {
     if (err) {
       return callback(err);
     }

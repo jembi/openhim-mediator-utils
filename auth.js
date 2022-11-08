@@ -1,11 +1,12 @@
 "use strict";
 
 import crypto from "crypto";
-import request from "request";
+import fetch from "node-fetch";
+import https from "https";
 
 const authUserMap = new Map();
 
-export const authenticate = (options, callback) => {
+export const authenticate = async (options, callback) => {
   // authenticate the username
   let reqOptions = {
     url: `${options.apiURL}/authenticate/${options.username}`,
@@ -16,13 +17,17 @@ export const authenticate = (options, callback) => {
     reqOptions.rejectUnauthorized = false;
   }
 
-  request.get(reqOptions, (err, resp, body) => {
-    if (err) {
-      callback(err);
-      return;
-    }
-    // if user isnt found
-    if (resp.statusCode !== 200) {
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: reqOptions.rejectUnauthorized,
+  });
+
+  try {
+    const res = await fetch(reqOptions.url, {
+      method: "GET",
+      agent: httpsAgent,
+    });
+
+    if (res.status !== 200) {
       callback(
         new Error(
           `User ${options.username} not found when authenticating with core API`
@@ -30,14 +35,16 @@ export const authenticate = (options, callback) => {
       );
       return;
     }
-    try {
-      body = JSON.parse(body);
-      authUserMap.set(options.username, body.salt);
-    } catch (err) {
-      callback(err);
-    }
+
+    const body = JSON.parse(JSON.stringify(await res.json()));
+
+    authUserMap.set(options.username, body.salt);
+
     callback(null, body);
-  });
+  } catch (error) {
+    callback(error);
+    return;
+  }
 };
 
 export const genAuthHeaders = (options) => {
