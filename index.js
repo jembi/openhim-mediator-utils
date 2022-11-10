@@ -1,6 +1,6 @@
 "use strict";
 
-import { authenticate, genAuthHeaders } from "./auth";
+import { authenticate, genAuthHeaders, appendHeader } from "./auth";
 import { registerMediator } from "./register";
 import {
   activateHeartbeat,
@@ -17,4 +17,5 @@ export default {
   deactivateHearbeat: deactivateHearbeat,
   deactivateHeartbeat: deactivateHeartbeat,
   fetchConfig: fetchConfig,
+  appendHeader: appendHeader,
 };

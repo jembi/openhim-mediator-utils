@@ -75,3 +75,12 @@ export const genAuthHeaders = (options) => {
     "auth-token": token,
   };
 };
+
+export const appendHeader = (original, { key, value }) => {
+  let newHeaders = original;
+
+  Object.keys(newHeaders).push(key);
+  newHeaders[key] = value;
+
+  return newHeaders;
+};
