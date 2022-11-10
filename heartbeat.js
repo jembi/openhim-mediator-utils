@@ -1,34 +1,42 @@
 "use strict";
 
-import request from "request";
 import utils from "./index";
+import fetch from "node-fetch";
+import https from "https";
 
 import events from "events";
 const emitter = new events.EventEmitter();
 let timer;
 
-function sendHeartbeat(options, forceConfig, callback) {
-  const reqOptions = {
-    url: `${options.apiURL}/mediators/${options.urn}/heartbeat`,
-    headers: utils.genAuthHeaders(options),
-    body: { uptime: process.uptime() },
-    json: true,
+async function sendHeartbeat(options, forceConfig, callback) {
+  const httpsAgent = new https.Agent({
     rejectUnauthorized: !options.trustSelfSigned,
-  };
+  });
+
+  const headers = utils.appendHeader(utils.genAuthHeaders(options), {
+    key: "Content-Type",
+    value: "application/json",
+  });
+
+  const body = { uptime: process.uptime() };
   if (forceConfig === true) {
-    reqOptions.body.config = true;
+    body.config = true;
   }
-  request.post(reqOptions, (err, res, body) => {
-    if (err) {
-      if (callback) {
-        return callback(err);
-      } else {
-        return emitter.emit("error", err);
-      }
-    }
-    if (res.statusCode !== 200) {
+
+  const reqOptions = {
+    method: "POST",
+    headers: headers,
+    agent: httpsAgent,
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const url = `${options.apiURL}/mediators/${options.urn}/heartbeat`;
+    const res = await fetch(url, reqOptions);
+
+    if (res.status !== 200) {
       const error = new Error(
-        `Heartbeat unsuccessful, received status code of ${res.statusCode}`
+        `Heartbeat unsuccessful, received ${res.status} ${res.statusText}`
       );
       if (callback) {
         return callback(error);
@@ -36,12 +44,15 @@ function sendHeartbeat(options, forceConfig, callback) {
         return emitter.emit("error", error);
       }
     }
-    if (body && body !== "OK") {
+
+    const resBody = JSON.parse(JSON.stringify(await res.text()));
+
+    if (resBody && resBody !== "OK") {
       // if there is a callback use that else, emit as an event
       if (callback) {
-        return callback(null, body);
+        return callback(null, resBody);
       } else {
-        return emitter.emit("config", body);
+        return emitter.emit("config", resBody);
       }
     } else {
       // No config found
@@ -49,13 +60,19 @@ function sendHeartbeat(options, forceConfig, callback) {
         return callback(null, {});
       }
     }
-  });
+  } catch (error) {
+    if (callback) {
+      return callback(new Error(`Heartbeat unsuccessful: ${error}`));
+    } else {
+      return emitter.emit("error", error);
+    }
+  }
 }
 
-export const activateHeartbeat = (options, interval) => {
+export const activateHeartbeat = async (options, interval) => {
   interval = interval || 10000;
 
-  utils.authenticate(
+  await utils.authenticate(
     {
       apiURL: options.apiURL,
       username: options.username,
@@ -68,8 +85,8 @@ export const activateHeartbeat = (options, interval) => {
       if (timer) {
         clearInterval(timer);
       }
-      timer = setInterval(() => {
-        sendHeartbeat(options);
+      timer = setInterval(async () => {
+        await sendHeartbeat(options);
       }, interval);
     }
   );
@@ -86,18 +103,18 @@ export const deactivateHeartbeat = () => {
   clearInterval(timer);
 };
 
-export const fetchConfig = (options, callback) => {
-  utils.authenticate(
+export const fetchConfig = async (options, callback) => {
+  await utils.authenticate(
     {
       apiURL: options.apiURL,
       username: options.username,
       rejectUnauthorized: !options.trustSelfSigned,
     },
-    (err) => {
+    async (err) => {
       if (err) {
         return callback(err);
       }
-      sendHeartbeat(options, true, callback);
+      await sendHeartbeat(options, true, callback);
     }
   );
 };
