@@ -1,0 +1,34 @@
+{
+  "urn": "urn:mediator:mediator",
+  "version": "1.0.0",
+  "description": "A mediator handling interactions between the OpenHIM Core service",
+  "defaultChannelConfig": [
+    {
+      "name": "MPI mediator",
+      "urlPattern": "^/fhir$",
+      "routes": [
+        {
+          "name": "MPI Endpoint",
+          "host": "mpi-mediator",
+          "port": "3000",
+          "primary": true,
+          "type": "http"
+        }
+      ],
+      "allow": ["instant"],
+      "methods": ["POST"],
+      "type": "http"
+    }
+  ],
+  "endpoints": [
+    {
+      "name": "MPI Endpoint",
+      "host": "mpi-mediator",
+      "path": "/fhir",
+      "port": "3000",
+      "primary": true,
+      "type": "http"
+    }
+  ],
+  "configDefs": []
+}
