@@ -1,6 +1,6 @@
 "use strict";
 
-import utils from "./index";
+import utils from "./index.js";
 import fetch from "node-fetch";
 import https from "https";
 
@@ -49,16 +49,16 @@ export const registerMediator = async (options, mediatorConfig, callback) => {
         });
 
         if (res.status === 201) {
-          callback();
+          await callback();
         } else {
-          callback(
+          await callback(
             new Error(
               `Recieved a non-201 response code, the response body was: ${await res.text()}`
             )
           );
         }
       } catch (error) {
-        callback(error);
+        await callback(error);
       }
     }
   );

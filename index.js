@@ -1,13 +1,13 @@
 "use strict";
 
-import { authenticate, genAuthHeaders, appendHeader } from "./auth";
-import { registerMediator } from "./register";
+import { authenticate, genAuthHeaders, appendHeader } from "./auth.js";
+import { registerMediator } from "./register.js";
 import {
   activateHeartbeat,
   deactivateHearbeat,
   deactivateHeartbeat,
   fetchConfig,
-} from "./heartbeat";
+} from "./heartbeat.js";
 
 export default {
   authenticate: authenticate,

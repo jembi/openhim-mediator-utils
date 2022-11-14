@@ -1,6 +1,6 @@
 "use strict";
 
-import utils from "./index";
+import utils from "./index.js";
 import fetch from "node-fetch";
 import https from "https";
 
