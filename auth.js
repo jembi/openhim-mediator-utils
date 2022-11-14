@@ -28,7 +28,7 @@ export const authenticate = async (options, callback) => {
     });
 
     if (res.status !== 200) {
-      await callback(
+      return callback(
         new Error(
           `User ${options.username} not found when authenticating with core API`
         )
@@ -42,8 +42,7 @@ export const authenticate = async (options, callback) => {
 
     await callback(null, body);
   } catch (error) {
-    await callback(error);
-    return;
+    return callback(error);
   }
 };
 

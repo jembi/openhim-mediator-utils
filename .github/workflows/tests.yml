@@ -7,10 +7,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install modules
       run: npm i
-    - name: Download OpenHIM compose file
-      run: curl https://raw.githubusercontent.com/jembi/openhim-core-js/v5.4.2/infrastructure/docker-compose.yml -o docker-compose.yml
     - name: Start OpenHIM stack
       run: |
+        cd tests
         docker-compose up -d
         sleep 15
     - name: Run integration tests

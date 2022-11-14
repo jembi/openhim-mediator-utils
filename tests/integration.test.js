@@ -184,10 +184,12 @@ describe("Mediator Registration", () => {
     let callbackValue = "";
     await utils.registerMediator(openhimConfig, mediatorConfig, async () => {
       await utils.fetchConfig(openhimConfig, async (cVal) => {
-        callbackValue = cVal;
         openhimConfig.trustSelfSigned = false;
-        const emitter = await utils.activateHeartbeat(openhimConfig);
-        emitter.on("error", (err) => {});
+        try {
+          await utils.activateHeartbeat(openhimConfig);
+        } catch (error) {
+          callbackValue = error;
+        }
       });
     });
 
@@ -197,7 +199,7 @@ describe("Mediator Registration", () => {
     expect(await checkRegistered(openhimConfig, mediatorConfig)).to.eql(null);
   });
 
-  it("Should return an error from unauthorized activation of the heartbeat", async () => {
+  it("Should return an error from unauthorized authenticationfrom fetchConfig()", async () => {
     let { mediatorConfig, openhimConfig } = testConfig("mediatorConfig.json");
 
     let callbackValue = "";
@@ -205,13 +207,13 @@ describe("Mediator Registration", () => {
       openhimConfig.trustSelfSigned = false;
       await utils.fetchConfig(openhimConfig, async (cVal) => {
         callbackValue = cVal;
-        const emitter = await utils.activateHeartbeat(openhimConfig);
-        emitter.on("error", (err) => {});
       });
     });
 
     expect(
-      JSON.stringify(callbackValue).includes("DEPTH_ZERO_SELF_SIGNED_CERT")
+      `${callbackValue}`.includes(
+        "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
+      )
     ).to.eql(true);
   });
 

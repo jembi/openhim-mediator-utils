@@ -26,7 +26,6 @@ utils.fetchConfig(...);
 To run the tests, there are a few prerequisite steps. Run the below steps in the order specified to run the tests.
 
 - npm install
-- npm run openhim:download
 - npm run openhim:start
 - npm run test
 

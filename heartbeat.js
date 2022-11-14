@@ -57,7 +57,7 @@ async function sendHeartbeat(options, forceConfig, callback) {
     } else {
       // No config found
       if (callback) {
-        return callback(null, {});
+        await callback(null);
       }
     }
   } catch (error) {

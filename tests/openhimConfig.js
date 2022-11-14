@@ -22,19 +22,6 @@ import path from "path";
 
   const data = JSON.stringify(jsonData);
 
-  const options = {
-    protocol: "https:",
-    hostname: "localhost",
-    port: 8080,
-    path: "/metadata",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Content-Length": data.length,
-      Authorization: `Basic ${authHeader}`,
-    },
-  };
-
   try {
     const res = await fetch(`https://localhost:8080/metadata`, {
       method: "POST",
