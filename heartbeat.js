@@ -45,7 +45,7 @@ async function sendHeartbeat(options, forceConfig, callback) {
       }
     }
 
-    const resBody = JSON.parse(JSON.stringify(await res.text()));
+    const resBody = await res.text();
 
     if (resBody && resBody !== "OK") {
       // if there is a callback use that else, emit as an event

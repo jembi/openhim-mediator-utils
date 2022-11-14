@@ -33,10 +33,9 @@ export const authenticate = async (options, callback) => {
           `User ${options.username} not found when authenticating with core API`
         )
       );
-      return;
     }
 
-    const body = JSON.parse(JSON.stringify(await res.json()));
+    const body = await res.json();
 
     authUserMap.set(options.username, body.salt);
 
