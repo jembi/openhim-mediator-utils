@@ -5,63 +5,56 @@ import https from "https";
 import fetch from "node-fetch";
 import path from "path";
 
-const authHeader = new Buffer.from(
-  "root@openhim.org:openhim-password"
-).toString("base64");
+(async function () {
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
 
-const jsonData = JSON.parse(
-  fs.readFileSync(path.resolve(path.dirname("."), "openhim-import.json"))
-);
+  const authHeader = new Buffer.from(
+    "root@openhim.org:openhim-password"
+  ).toString("base64");
 
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
-const data = JSON.stringify(jsonData);
+  const jsonData = JSON.parse(
+    fs.readFileSync(path.resolve(path.dirname("."), "openhim-import.json"))
+  );
 
-console.log("===================================");
-console.log(`data = ${data}`);
+  const data = JSON.stringify(jsonData);
 
-const options = {
-  protocol: "https:",
-  hostname: "localhost",
-  port: 8080,
-  path: "/metadata",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Content-Length": data.length,
-    Authorization: `Basic ${authHeader}`,
-  },
-};
+  const options = {
+    protocol: "https:",
+    hostname: "localhost",
+    port: 8080,
+    path: "/metadata",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+      Authorization: `Basic ${authHeader}`,
+    },
+  };
 
-// const httpsAgent = new https.Agent({
-//   rejectUnauthorized: false,
-// });
+  try {
+    const res = await fetch(`https://localhost:8080/metadata`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": data.length,
+        Authorization: `Basic ${authHeader}`,
+      },
+      agent: httpsAgent,
+      body: data,
+    });
 
-// const reqs = fetch(`https://127.0.0.1:8080/heartbeat`, {
-//   method: "GET",
-//   headers: {
-//     "Content-Type": "application/json",
-//     "Content-Length": data.length,
-//     Authorization: `Basic ${authHeader}`,
-//   },
-//   agent: httpsAgent,
-// });
+    if (res.status == 401) {
+      throw new Error(`Incorrect OpenHIM API credentials`);
+    }
 
-const req = https.request(options, (res) => {
-  if (res.statusCode == 401) {
-    throw new Error(`Incorrect OpenHIM API credentials`);
+    if (res.status != 201) {
+      throw new Error(`Failed to import OpenHIM config: ${res.statusText}`);
+    }
+  } catch (error) {
+    console.error(`Failed to import OpenHIM config: ${error}`);
   }
-
-  if (res.statusCode != 201) {
-    throw new Error(`Failed to import OpenHIM config: ${res.statusCode}`);
-  }
-
-  console.log("Successfully Imported OpenHIM Config");
-});
-
-req.on("error", (error) => {
-  console.error("Failed to import OpenHIM config: ", error);
-});
-
-req.write(data);
-req.end();
+})();
