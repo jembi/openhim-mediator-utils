@@ -1,7 +1,11 @@
 import fetch from "node-fetch";
 import https from "https";
+import fs from "fs";
+import { resolve } from "path";
+import { expect } from "chai";
+import { afterEach } from "mocha";
 
-import utils from "../index";
+import utils from "../index.js";
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -17,17 +21,17 @@ describe("OpenHIM API Authentication", () => {
       },
       async (err, body) => {
         try {
-          expect(err).toBeNull();
-          expect(body).toBeTruthy();
-          expect(body.salt).toBeTruthy();
-          expect(body.ts).toBeTruthy();
+          expect(err).to.be.null;
+          expect(!!body).to.eql(true);
+          expect(!!body.salt).to.eql(true);
+          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
 
         const authHeaders = utils.genAuthHeaders({
           username: "root@openhim.org",
-          password: "openhim-password",
+          password: "instant101",
         });
 
         try {
@@ -37,8 +41,8 @@ describe("OpenHIM API Authentication", () => {
             agent: httpsAgent,
           });
 
-          expect(res.status).toBe(200);
-          expect(res.body).toBeTruthy();
+          expect(res.status).to.be.eql(200);
+          expect(!!res.body).to.eql(true);
 
           done();
         } catch (error) {
@@ -57,10 +61,10 @@ describe("OpenHIM API Authentication", () => {
       },
       async (err, body) => {
         try {
-          expect(err).toBeNull();
-          expect(body).toBeTruthy();
-          expect(body.salt).toBeTruthy();
-          expect(body.ts).toBeTruthy();
+          expect(err).to.be.null;
+          expect(!!body).to.eql(true);
+          expect(!!body.salt).to.eql(true);
+          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -77,7 +81,7 @@ describe("OpenHIM API Authentication", () => {
             agent: httpsAgent,
           });
 
-          expect(res.status).toBe(401);
+          expect(res.status).to.eql(401);
 
           done();
         } catch (error) {
@@ -96,10 +100,10 @@ describe("OpenHIM API Authentication", () => {
       },
       async (err, body) => {
         try {
-          expect(err).toBeNull();
-          expect(body).toBeTruthy();
-          expect(body.salt).toBeTruthy();
-          expect(body.ts).toBeTruthy();
+          expect(err).to.be.null;
+          expect(!!body).to.eql(true);
+          expect(!!body.salt).to.eql(true);
+          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -116,7 +120,7 @@ describe("OpenHIM API Authentication", () => {
             agent: httpsAgent,
           });
 
-          expect(res.status).toBe(401);
+          expect(res.status).to.eql(401);
 
           done();
         } catch (error) {
