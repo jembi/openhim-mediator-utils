@@ -18,9 +18,11 @@
   "author": "jembi",
   "license": "MPL-2.0",
   "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/eslint-parser": "^7.19.1",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.0",
-    "eslint": "^1.5.1"
+    "eslint": "^8.27.0"
   },
   "dependencies": {
     "chai": "^4.3.7",
