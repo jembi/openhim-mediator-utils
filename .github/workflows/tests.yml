@@ -1,18 +1,22 @@
-name: CI
+name: Integration tests
 on: push
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install modules
-      run: npm i
-    - name: Start OpenHIM stack
-      run: |
-        cd tests
-        docker-compose up -d
-        sleep 15
-    - name: Run integration tests
-      run: npm run test:integration
-    - name: Run linting
-      run: npm run test:lint
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm i
+
+      - name: Start OpenHIM stack
+        run: |
+          cd tests
+          docker-compose up -d
+          sleep 5
+          node openhimConfig.js
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Run linting
+        run: npm run test:lint
