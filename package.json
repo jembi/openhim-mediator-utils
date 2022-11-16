@@ -8,8 +8,8 @@
     "test": "npm run test:integration && npm run test:lint",
     "test:integration": "mocha 'tests/integration.test.js'",
     "test:lint": "eslint **/*.js",
-    "openhim:start": "cd tests && docker-compose up -d && sleep 5 && node openhimConfig.js",
-    "openhim:destroy": "cd /tmp && docker-compose down -v"
+    "openhim:start": "cd tests && docker compose up -d && sleep 5 && node openhimConfig.js",
+    "openhim:destroy": "cd tests && docker-compose down -v"
   },
   "keywords": [
     "openhim",
