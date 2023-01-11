@@ -1,13 +1,21 @@
-'use strict';
+"use strict";
 
-const auth = require('./auth');
-const register = require('./register');
-const heartbeat = require('./heartbeat');
+import { authenticate, genAuthHeaders, appendHeader } from "./auth.js";
+import { registerMediator } from "./register.js";
+import {
+  activateHeartbeat,
+  deactivateHearbeat,
+  deactivateHeartbeat,
+  fetchConfig,
+} from "./heartbeat.js";
 
-exports.authenticate = auth.authenticate;
-exports.genAuthHeaders = auth.genAuthHeaders;
-exports.registerMediator = register.registerMediator;
-exports.activateHeartbeat = heartbeat.activateHeartbeat;
-exports.deactivateHearbeat = heartbeat.deactivateHearbeat;
-exports.deactivateHeartbeat = heartbeat.deactivateHeartbeat;
-exports.fetchConfig = heartbeat.fetchConfig;
+export default {
+  authenticate: authenticate,
+  genAuthHeaders: genAuthHeaders,
+  registerMediator: registerMediator,
+  activateHeartbeat: activateHeartbeat,
+  deactivateHearbeat: deactivateHearbeat,
+  deactivateHeartbeat: deactivateHeartbeat,
+  fetchConfig: fetchConfig,
+  appendHeader: appendHeader,
+};
