@@ -202,13 +202,13 @@ describe("Mediator Registration", () => {
       await utils.fetchConfig(openhimConfig, async (cVal) => {
         callbackValue = cVal;
       });
-    });
 
-    expect(
-      `${callbackValue}`.match(
-        "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
-      ).length
-    ).to.eql(1);
+      expect(
+        `${callbackValue}`.match(
+          "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
+        ).length
+      ).to.eql(1);
+    });
   });
 
   it("Should register a mediator and activate the heartbeat", async () => {
