@@ -202,10 +202,10 @@ describe("Mediator Registration", () => {
       openhimConfig.trustSelfSigned = false;
       await utils.fetchConfig(openhimConfig, async (cVal) => {
         callbackValue = cVal;
-        console.log(callbackValue)
+        console.log(cVal);
 
         expect(
-          `${callbackValue}`.match(
+          `${cVal}`.match(
             "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
           ).length
         ).to.eql(1);
