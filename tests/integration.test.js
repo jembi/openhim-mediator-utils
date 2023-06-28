@@ -6,6 +6,7 @@ import { expect } from "chai";
 import { afterEach } from "mocha";
 
 import utils from "../index.js";
+import { log } from "console";
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -201,6 +202,7 @@ describe("Mediator Registration", () => {
       openhimConfig.trustSelfSigned = false;
       await utils.fetchConfig(openhimConfig, async (cVal) => {
         callbackValue = cVal;
+        console.log(callbackValue)
 
         expect(
           `${callbackValue}`.match(
