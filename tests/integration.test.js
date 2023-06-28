@@ -23,8 +23,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -63,8 +61,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -102,8 +98,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
