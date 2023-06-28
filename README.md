@@ -80,7 +80,7 @@ The authentication headers are returned as a headers object. eg.
 
 ```js
 headers = {
- 'Authorization': 'Basic token'
+ 'Authorization': 'Basic <token>'
 }
 ```
 
