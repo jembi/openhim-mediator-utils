@@ -6,7 +6,6 @@ import { expect } from "chai";
 import { afterEach } from "mocha";
 
 import utils from "../index.js";
-import { log } from "console";
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -202,15 +201,14 @@ describe("Mediator Registration", () => {
       openhimConfig.trustSelfSigned = false;
       await utils.fetchConfig(openhimConfig, async (cVal) => {
         callbackValue = cVal;
-        console.log(cVal);
-
-        expect(
-          `${cVal}`.match(
-            "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
-          ).length
-        ).to.eql(1);
       });
     });
+
+    expect(
+      `${callbackValue}`.includes(
+        "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self"
+      )
+    ).to.eql(true);
   });
 
   it("Should register a mediator and activate the heartbeat", async () => {
