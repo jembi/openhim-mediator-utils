@@ -204,6 +204,7 @@ describe("Mediator Registration", () => {
       });
     });
 
+    console.log(callbackValue)
     expect(
       `${callbackValue}`.includes(
         "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
