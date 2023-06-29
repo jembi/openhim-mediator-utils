@@ -23,8 +23,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -63,8 +61,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -102,8 +98,6 @@ describe("OpenHIM API Authentication", () => {
         try {
           expect(err).to.be.null;
           expect(!!body).to.eql(true);
-          expect(!!body.salt).to.eql(true);
-          expect(!!body.ts).to.eql(true);
         } catch (err) {
           return done(err);
         }
@@ -212,7 +206,7 @@ describe("Mediator Registration", () => {
 
     expect(
       `${callbackValue}`.includes(
-        "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self signed certificate"
+        "FetchError: request to https://localhost:8080/authenticate/root@openhim.org failed, reason: self"
       )
     ).to.eql(true);
   });

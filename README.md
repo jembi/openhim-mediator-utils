@@ -4,6 +4,8 @@ This package contains a few useful functions to make it easier to develop OpenHI
 mediators. When creating a node.js mediator you can make use of it by installing
 it through NPM as follows:
 
+> Compatible with OpenHIM versions > v7.2.1. For OpenHIM versions < v7.2.1 use tags before v1.0.0.
+
 ```sh
 npm install --save openhim-mediator-utils
 ```
@@ -65,8 +67,7 @@ communication, options must contain:
 * `options.trustSelfSigned` - [optional] boolean which defaults to false - if set to true, ignore self signed certificate errors (for non-production use)
 
 callback will be called with an Error object if an error occurs, otherwise
-the body received from the OpenHIM-core server is returned. This is an object
-like the following `{salt: <userSalt>, ts: <timestampOfServer>}`.
+the body received from the OpenHIM-core server is returned.
 
 #### .genAuthHeaders(options)
 
@@ -79,14 +80,9 @@ The authentication headers are returned as a headers object. eg.
 
 ```js
 headers = {
- 'auth-username': username,
- 'auth-ts': ts,
- 'auth-salt': salt,
- 'auth-token': token
+ 'Authorization': 'Basic <token>'
 }
 ```
-
-If the user has not been authenticated first, then an exception will be thrown
 
 ### Mediator Heartbeats and Configuration
 
