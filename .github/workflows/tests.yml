@@ -1,19 +1,22 @@
-name: CI
+name: Integration tests
 on: push
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install modules
-      run: npm i
-    - name: Download OpenHIM compose file
-      run: curl https://raw.githubusercontent.com/jembi/openhim-core-js/v5.4.2/infrastructure/docker-compose.yml -o docker-compose.yml
-    - name: Start OpenHIM stack
-      run: |
-        docker-compose up -d
-        sleep 15
-    - name: Run integration tests
-      run: npm run test:integration
-    - name: Run linting
-      run: npm run test:lint
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm i
+
+      - name: Start OpenHIM stack
+        run: |
+          cd tests
+          docker-compose up -d
+          sleep 20
+          node openhimConfig.js
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Run linting
+        run: npm run test:lint
