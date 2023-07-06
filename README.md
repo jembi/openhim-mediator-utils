@@ -11,7 +11,7 @@ npm install --save openhim-mediator-utils
 You can then use the package as follows:
 
 ```js
-const utils = require('openhim-mediator-utils');
+import utils from 'openhim-mediator-utils';
 
 utils.registerMediator(...);
 utils.authenticate(...);
@@ -19,6 +19,16 @@ utils.genAuthHeaders(...);
 utils.activateHeartbeat(...);
 utils.deactivateHearbeat(...);
 utils.fetchConfig(...);
+```
+
+For commonjs projects use versions before version 1.0.0. These versions are still supported.
+
+```sh
+npm install --save openhim-mediator-utils@0
+```
+
+```js
+const utils = require('openhim-mediator-utils)
 ```
 
 ## API details
@@ -68,14 +78,9 @@ The authentication headers are returned as a headers object. eg.
 
 ```js
 headers = {
- 'auth-username': username,
- 'auth-ts': ts,
- 'auth-salt': salt,
- 'auth-token': token
+ 'Authorization': 'Basic <token>'
 }
 ```
-
-If the user has not been authenticated first, then an exception will be thrown
 
 ### Mediator Heartbeats and Configuration
 
