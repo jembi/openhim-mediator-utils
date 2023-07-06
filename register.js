@@ -1,44 +1,31 @@
 'use strict';
 
-const request = require('request');
-const utils = require('./auth');
+const https = require('https');
+const axios = require('axios');
+
+const auth = require('./auth');
 
 exports.registerMediator = (options, mediatorConfig, callback) => {
-  // define login credentails for authorization
-  const username = options.username;
-  const password = options.password;
-  const apiURL = options.apiURL;
-  const rejectUnauthorized = !options.trustSelfSigned;
+  let rejectUnauthorized = !options.trustSelfSigned;
+  
+  // For backwards compatibility
+  if (options.rejectUnauthorized === false) {
+    rejectUnauthorized = false;
+  }
 
-  // authenticate the username
-  utils.authenticate({username, apiURL, rejectUnauthorized}, (err) => {
-    if (err) {
-      return callback(err);
-    }
-    const headers = utils.genAuthHeaders({username, password});
+  const headers = Object.assign({}, auth.genAuthHeaders(options), {'Content-Type': 'application/json'});
 
-    // define request headers with auth credentails
-    const reqOptions = {
-      url: `${apiURL}/mediators`,
-      json: true,
-      headers: headers,
-      body: mediatorConfig,
-      rejectUnauthorized: rejectUnauthorized
-    };
+  const reqOptions = {
+    url: `${options.apiURL}/mediators`,
+    headers: headers,
+    data: mediatorConfig,
+    method: 'POST'
+  };
+  reqOptions.httpsAgent = new https.Agent({ rejectUnauthorized });
 
-    // POST mediator to API for creation/update
-    request.post(reqOptions, (err, resp) => {
-      if (err){
-        return callback(err);
-      }
-
-      // check the response status from the API server
-      if (resp.statusCode === 201) {
-        // successfully created/updated
-        callback();
-      } else {
-        callback(new Error(`Recieved a non-201 response code, the response body was: ${resp.body}`));
-      }
-    });
+  axios(reqOptions).then(() => {
+    callback();
+  }).catch(err => {
+    callback(err);
   });
 };
