@@ -1,0 +1,30 @@
+version: "3"
+networks:
+  openhim:
+
+services:
+  mongo-db:
+    container_name: mongo-db
+    image: mongo:4.2
+    networks:
+      - openhim
+    volumes:
+      - "mongo-data:/data/db"
+    restart: unless-stopped
+
+  openhim-core:
+    container_name: openhim-core
+    depends_on:
+      - mongo-db
+    image: jembi/openhim-core:v7.2.1
+    restart: unless-stopped
+    environment:
+      mongo_url: "mongodb://mongo-db:27017/openhim"
+      mongo_atnaUrl: "mongodb://mongo-db:27017/openhim"
+    ports:
+      - "8080:8080"
+    networks:
+      - openhim
+
+volumes:
+  mongo-data:

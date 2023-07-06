@@ -1,0 +1,41 @@
+{
+  "urn": "urn:mediator:mediator2",
+  "version": "1.0.0",
+  "name": "Test mediator",
+  "description": "A mediator",
+  "defaultChannelConfig": [
+    {
+      "name": "test mediator",
+      "urlPattern": "^/fhir$",
+      "routes": [
+        {
+          "name": "Test Endpoint",
+          "host": "test-mediator",
+          "port": "3000",
+          "primary": true,
+          "type": "http"
+        }
+      ],
+      "allow": [
+        "instant"
+      ],
+      "methods": [
+        "POST"
+      ],
+      "type": "http"
+    }
+  ],
+  "endpoints": [
+    {
+      "name": "test Endpoint",
+      "host": "test-mediator",
+      "path": "/fhir",
+      "port": "3000",
+      "primary": true,
+      "type": "http"
+    }
+  ],
+  "configDefs": [{
+    "test": "test"
+  }]
+}

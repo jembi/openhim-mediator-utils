@@ -1,0 +1,38 @@
+{
+  "urn": "urn:mediator:mediator1",
+  "version": "1.0.0",
+  "description": "A mediator handling interactions between the OpenHIM Core service",
+  "defaultChannelConfig": [
+    {
+      "name": "Test mediator",
+      "urlPattern": "^/fhir$",
+      "routes": [
+        {
+          "name": "Test Endpoint",
+          "host": "Test-mediator",
+          "port": "3000",
+          "primary": true,
+          "type": "http"
+        }
+      ],
+      "allow": [
+        "instant"
+      ],
+      "methods": [
+        "POST"
+      ],
+      "type": "http"
+    }
+  ],
+  "endpoints": [
+    {
+      "name": "Test Endpoint",
+      "host": "Test-mediator",
+      "path": "/fhir",
+      "port": "3000",
+      "primary": true,
+      "type": "http"
+    }
+  ],
+  "configDefs": []
+}
