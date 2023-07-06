@@ -1,12 +1,12 @@
 {
   "name": "openhim-mediator-utils",
-  "version": "0.2.4",
+  "version": "0.4.0",
   "description": "Utilities for creating OpenHIM mediators",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:integration && npm run test:lint",
-    "test:integration": "jest",
-    "test:lint": "eslint **/*.js"
+    "test": "npm run test:integration",
+    "test:integration": "tap --no-coverage tests/*test.js",
+    "test:lint": "eslint *.js"
   },
   "keywords": [
     "openhim",
@@ -15,11 +15,11 @@
   "author": "jembi",
   "license": "MPL-2.0",
   "devDependencies": {
-    "eslint": "^1.5.1",
-    "jest": "^27.5.1"
+    "eslint": "^8.44.0",
+    "tap": "^16.3.7"
   },
   "dependencies": {
-    "request": "^2.63.0"
+    "axios": "^1.4.0"
   },
   "repository": {
     "type": "git",
